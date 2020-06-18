@@ -44,6 +44,7 @@ Option                           | Since | Description
 `-ttl <seconds>`                 |       | TTL for services. Default: 0, no expiry (supported backends only)
 `-ttl-refresh <seconds>`         |       | Frequency service TTLs are refreshed (supported backends only)
 `-useIpFromLabel <label>`        |       | Uses the IP address stored in the given label, which is assigned to a container, for registration with Consul
+`-useIpFromHostname`             |       | Uses the IP address resolved from Config.Hostname if NetworkMode detects an empty IP
 
 If the `-internal` option is used, Registrator will register the docker0
 internal IP and port instead of the host mapped ones.

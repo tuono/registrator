@@ -324,9 +324,26 @@ func (b *Bridge) newService(port ServicePort, isgroup bool) *Service {
 			log.Println(service.Name + ": detected container NetworkMode, linked to: " + networkContainerId[:12])
 			networkContainer, err := b.docker.InspectContainer(networkContainerId)
 			if err != nil {
-				log.Println("unable to inspect network container:", networkContainerId[:12], err)
+				log.Println(service.Name + ": unable to inspect network container:", networkContainerId[:12], err)
 			} else {
 				service.IP = networkContainer.NetworkSettings.IPAddress
+
+				if service.IP == "" && b.config.UseIpFromHostname == true {
+					containerHostname := container.Config.Hostname
+					if containerHostname != "" {
+						log.Println(service.Name + ": NetworkMode detected empty ip address; falling back to resolution of Config.Hostname: " + containerHostname)
+						ip, err := net.ResolveIPAddr("ip", containerHostname)
+						if err != nil {
+							log.Println(service.Name + ": unable to resolve Config.Hostname: " + containerHostname + "; Error: ", err)
+						} else {
+							service.IP = ip.String()
+							log.Println(service.Name + ": using container IP " + service.IP + " from Config.Hostname")
+						}
+					} else {
+						log.Println(service.Name + ": unable to find valid Config.Hostname")
+					}
+				}
+
 				log.Println(service.Name + ": using network container IP " + service.IP)
 			}
 		}
