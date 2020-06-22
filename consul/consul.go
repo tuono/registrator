@@ -110,6 +110,9 @@ func (r *ConsulAdapter) buildCheck(service *bridge.Service) *consulapi.AgentServ
 		if method := service.Attrs["check_https_method"]; method != "" {
 			check.Method = method
 		}
+		if tls_skip_verify := service.Attrs["check_tls_skip_verify"]; tls_skip_verify != "" {
+			check.TLSSkipVerify, _ = strconv.ParseBool(tls_skip_verify)
+		}
 	} else if cmd := service.Attrs["check_cmd"]; cmd != "" {
 		check.Args = []string{"check-cmd", service.Origin.ContainerID[:12], service.Origin.ExposedPort, cmd}
 	} else if script := service.Attrs["check_script"]; script != "" {

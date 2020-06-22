@@ -51,8 +51,9 @@ register an HTTPS health check with the service.
 ```bash
 SERVICE_443_CHECK_HTTPS=/health/endpoint/path
 SERVICE_443_CHECK_INTERVAL=15s
-SERVICE_443_CHECK_TIMEOUT=1s		# optional, Consul default used otherwise
-SERVICE_443_CHECK_HTTPS_METHOD=HEAD	# optional, Consul default used otherwise
+SERVICE_443_CHECK_TIMEOUT=1s		    # optional, Consul default used otherwise
+SERVICE_443_CHECK_HTTPS_METHOD=HEAD	    # optional, Consul default used otherwise
+SERVICE_443_CHECK_TLS_SKIP_VERIFY=true  # optional, Consul default used otherwise
 ```
 
 ### Consul TCP Check
